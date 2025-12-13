@@ -14,7 +14,7 @@ def on_open(ws):
     ws.send("Hello, Server!")
 
 if __name__ == "__main__":
-    ws = websocket.WebSocketApp("wss://echo.websocket.org",   # wss:// connects only on https and ws:// connects only on http
+    ws = websocket.WebSocketApp("ws://138.199.224.29:8080/domains-only",   # wss:// connects only on https and ws:// connects only on http
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)
