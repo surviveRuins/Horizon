@@ -1,22 +1,23 @@
 import websocket
 
-def on_message(ws, message):
+def onMessage(ws, message):
     print(f"Received message: {message}")
 
-def on_error(ws, error):
+def onError(ws, error):
     print(f"Encountered error: {error}")
 
-def on_close(ws, close_status_code, close_msg):
+def onClose(ws, closeStatusCode, closeMsg):
     print("Connection closed")
 
-def on_open(ws):
+def onOpen(ws):
     print("Connection opened")
     ws.send("Hello, Server!")
 
-if __name__ == "__main__":
-    ws = websocket.WebSocketApp("ws://138.199.224.29:8080/domains-only",   # wss:// connects only on https and ws:// connects only on http
-                                on_message=on_message,
-                                on_error=on_error,
-                                on_close=on_close)
-    ws.on_open = on_open
+if __name__ == "__main__": 
+    # wss:// connects only on https and ws:// connects only on http. Since my server doesn't have a TLS cert and is direct IP address we will use ws://
+    ws = websocket.WebSocketApp("ws://138.199.224.29:8080/domains-only",   
+                                on_message=onMessage,
+                                on_error=onError,
+                                on_close=onClose)
+    ws.on_open = onOpen
     ws.run_forever()
