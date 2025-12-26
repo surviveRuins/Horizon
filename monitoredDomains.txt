@@ -1,1 +1,3 @@
 paypal.com
+yahoo.com
+apple.com

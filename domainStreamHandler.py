@@ -30,24 +30,37 @@ def detectComboSwapping(monitoredDomain, domain):
             if secondLevelDomain in domain:
                 print(domain)
         case 2:
-            if f"{secondLevelDomain}-" in domain or f"{secondLevelDomain}_" in domain:
+            if f"{secondLevelDomain}-" in domain:
                 print(domain)
         case 3:
-            if f"-{secondLevelDomain}" in domain or f"_{secondLevelDomain}" in domain:
+            if f"-{secondLevelDomain}" in domain:
                 print(domain)
         case 4:
-            if f"-{monitoredDomain}" in domain or f"_{monitoredDomain}" in domain:
+            if f"-{monitoredDomain}" in domain:
                 print(domain)
 
 def detectTLDSquatting(monitoredDomain, domain):
-    print(monitoredDomain)
+
+    # This will detect TLD Squatting attempts or show live domains that are already TLD squatting your monitored domain. 
+    # That means if a domain exists(and subdomain is added and shows up in CT log) or is freshly registered you will be alerted if it looks like a TLD squatting attempt
+    # Example: example.com ----> example.team is registered and HR-impersonating emails are sent.
+
+    monitoredSecondLevelDomain = monitoredDomain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+    secondLevelDomain = domain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+
+    monitoredTopLevelDomain = monitoredDomain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+    topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+
+    if(secondLevelDomain == monitoredDomainsList and topLevelDomain != monitoredTopLevelDomain):
+        print(domain)
             
 
 
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
-        detectComboSwapping(monitoredDomain, domain)
+        #detectComboSwapping(monitoredDomain, domain)
+        detectTLDSquatting(monitoredDomain, domain)
         #damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
                                                                                                            # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
         #if(damerauLevenshteinSimilarity > 0.5):
