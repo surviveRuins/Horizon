@@ -1,3 +1,2 @@
 paypal.com
-yahoo.com
-apple.com
+nip.com

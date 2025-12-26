@@ -55,13 +55,15 @@ def detectTLDSquatting(monitoredDomain, domain):
         print(domain)
             
 
+def detectTypoSquatting(monitoredDomain, domain):
+    damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
+                                                                                                           # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
+    if(damerauLevenshteinSimilarity >= 0.6):
+        print(domain)
+
 
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
-        #detectComboSwapping(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
-        #damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
-                                                                                                           # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
-        #if(damerauLevenshteinSimilarity > 0.5):
-        #print(domain)
+    
