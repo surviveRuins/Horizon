@@ -51,19 +51,33 @@ def detectTLDSquatting(monitoredDomain, domain):
     monitoredTopLevelDomain = monitoredDomain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
-    if(secondLevelDomain == monitoredDomainsList and topLevelDomain != monitoredTopLevelDomain):
+
+    if(secondLevelDomain == monitoredSecondLevelDomain and topLevelDomain != monitoredTopLevelDomain):
         print(domain)
             
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
                                                                                                            # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
-    if(damerauLevenshteinSimilarity >= 0.6):
+    if(damerauLevenshteinSimilarity >= 0.5):
         print(domain)
 
+def detectSubdomainSquatting(monitoredDomain, domain):
+
+    # This will detect subdomain squatting. In Subdomain Squatting an attacker registers a domain like amazon.google.attacker.org trying to phish
+    # victims by impersonating amazon or google, when in reality it is just a subdomain of an arbitiary domain the Attacker controlls
+
+    domainList = domain.split(".")
+
+    secondLevelDomain = monitoredDomain.split(".")[-2]
+
+    if secondLevelDomain in domainList:
+        print(domain)
 
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
+        #detectTypoSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
+
     
