@@ -1,5 +1,6 @@
 import sys
 from rapidfuzz.distance import DamerauLevenshtein
+import base64
 
 # This is the handler for the domain stream coming in, We get raw domains with wildcards removed as a string.
 # Everytime the streamIngest function is called 1 new domain was sent to the websocket client by my server.
@@ -52,9 +53,9 @@ def detectTLDSquatting(monitoredDomain, domain):
     topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
 
-    if(secondLevelDomain == monitoredSecondLevelDomain and topLevelDomain != monitoredTopLevelDomain):
-        print(domain)
-            
+    if(secondLevelDomain == monitoredSecondLevelDomain):
+        if(topLevelDomain != monitoredTopLevelDomain):
+            print(domain)            
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
@@ -77,7 +78,6 @@ def detectSubdomainSquatting(monitoredDomain, domain):
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
-        #detectTypoSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
 
     

@@ -1,9 +1,3 @@
-yahoo.com
-apple.com
-google.com
-coinbase.com
-feather.org
 amazon.com
-baidu.com
-tum.de
+apple.com
 discord.com
