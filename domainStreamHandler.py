@@ -55,7 +55,7 @@ def detectTLDSquatting(monitoredDomain, domain):
 
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
-            print(domain)            
+            print(topLevelDomain == monitoredTopLevelDomain)            
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
