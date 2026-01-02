@@ -49,13 +49,14 @@ def detectTLDSquatting(monitoredDomain, domain):
     monitoredSecondLevelDomain = monitoredDomain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     secondLevelDomain = domain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
-    monitoredTopLevelDomain = monitoredDomain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+    monitoredTopLevelDomain = monitoredDomain.split(".")[-1].split("\n")[0]     # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
 
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
-            print(topLevelDomain == monitoredTopLevelDomain)            
+            print(domain)
+            #print(f"{topLevelDomain.encode('ascii')} != {monitoredTopLevelDomain.encode('ascii')}")
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
