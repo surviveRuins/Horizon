@@ -19,7 +19,7 @@ with open(sys.argv[1], "r") as file:
     for monitoredDomain in file:
         monitoredDomainsList.append(monitoredDomain)
 
-def detectComboSwapping(monitoredDomain, domain):
+def detectComboSquatting(monitoredDomain, domain):
     # Assumption for our list of monitored domains from the file given by the user in sys.argv[1]: One domain in format main.tld per line: 
     # That means we need to seperate the `main` part as that is the only relevant thing for comboswapping: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for comboswapping
     # In paypal.com the `.com` is called TLD(Top Level Domain) and the `paypal` is called SLD(Second Level Domain)
@@ -29,15 +29,19 @@ def detectComboSwapping(monitoredDomain, domain):
     match(comboSwappingDetectionTreshold):
         case 1:
             if secondLevelDomain in domain:
+                print("Combosquatting: ", end='')
                 print(domain)
         case 2:
             if f"{secondLevelDomain}-" in domain:
+                print("Combosquatting: ", end='')
                 print(domain)
         case 3:
             if f"-{secondLevelDomain}" in domain:
+                print("Combosquatting: ", end='')
                 print(domain)
         case 4:
             if f"-{monitoredDomain}" in domain:
+                print("Combosquatting: ", end='')
                 print(domain)
 
 def detectTLDSquatting(monitoredDomain, domain):
@@ -55,8 +59,8 @@ def detectTLDSquatting(monitoredDomain, domain):
 
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
+            print("TLDSquatting: ", end='')
             print(domain)
-            #print(f"{topLevelDomain.encode('ascii')} != {monitoredTopLevelDomain.encode('ascii')}")
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
@@ -74,11 +78,15 @@ def detectSubdomainSquatting(monitoredDomain, domain):
     secondLevelDomain = monitoredDomain.split(".")[-2]
 
     if secondLevelDomain in domainList:
+        print("SubdomainSquatting: ", end='')
         print(domain)
 
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
+        detectComboSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
+        # detectTypoSquatting(monitoredDomain, domain)     # This does produce too many false positves right now, ai detection?
+        detectSubdomainSquatting(monitoredDomain, domain)
 
     
