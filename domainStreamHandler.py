@@ -75,9 +75,10 @@ def detectSubdomainSquatting(monitoredDomain, domain):
 
     domainList = domain.split(".")
 
-    secondLevelDomain = monitoredDomain.split(".")[-2]
+    monitoredSecondLevelDomain = monitoredDomain.split(".")[-2]
+    secondLevelDomain = domain.split(".")[-2]
 
-    if secondLevelDomain in domainList:
+    if monitoredSecondLevelDomain in domainList and monitoredSecondLevelDomain != secondLevelDomain:
         print("SubdomainSquatting: ", end='')
         print(domain)
 
