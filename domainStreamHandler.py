@@ -19,6 +19,18 @@ with open(sys.argv[1], "r") as file:
     for monitoredDomain in file:
         monitoredDomainsList.append(monitoredDomain)
 
+class Colors:
+    RED = '\033[31m'      # Errors / [!]
+    GREEN = '\033[32m'    # Success / [+]
+    YELLOW = '\033[33m'   # Warning / [*]
+    BLUE = '\033[94m'     # Info / [?]
+    RESET = '\033[0m'     # Reset to default
+
+
+
+def color(pSecondLevelDomain, pColor):
+    return f"{getattr(Colors, pColor)}{pSecondLevelDomain}{Colors.RESET}"
+
 def detectComboSquatting(monitoredDomain, domain):
     # Assumption for our list of monitored domains from the file given by the user in sys.argv[1]: One domain in format main.tld per line: 
     # That means we need to seperate the `main` part as that is the only relevant thing for comboswapping: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for comboswapping
@@ -30,19 +42,19 @@ def detectComboSquatting(monitoredDomain, domain):
         case 1:
             if secondLevelDomain in domain:
                 print("Combosquatting: ", end='')
-                print(domain)
+                print(domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED')))
         case 2:
             if f"{secondLevelDomain}-" in domain:
                 print("Combosquatting: ", end='')
-                print(domain)
+                print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
         case 3:
             if f"-{secondLevelDomain}" in domain:
                 print("Combosquatting: ", end='')
-                print(domain)
+                print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
         case 4:
             if f"-{monitoredDomain}" in domain:
                 print("Combosquatting: ", end='')
-                print(domain)
+                print(domain.replace(f"-{monitoredDomain}", color(f"-{monitoredDomain}", 'RED')))
 
 def detectTLDSquatting(monitoredDomain, domain):
 
@@ -60,13 +72,14 @@ def detectTLDSquatting(monitoredDomain, domain):
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
             print("TLDSquatting: ", end='')
-            print(domain)
+            secondAndTopLevelDomain = secondLevelDomain + "." + topLevelDomain
+            print(domain.replace(secondAndTopLevelDomain, color(secondAndTopLevelDomain, 'RED')))
 
 def detectTypoSquatting(monitoredDomain, domain):
     damerauLevenshteinSimilarity = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
                                                                                                            # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
     if(damerauLevenshteinSimilarity >= 0.5):
-        print(domain)
+        print(color(domain, 'RED'))
 
 def detectSubdomainSquatting(monitoredDomain, domain):
 
@@ -80,7 +93,7 @@ def detectSubdomainSquatting(monitoredDomain, domain):
 
     if monitoredSecondLevelDomain in domainList and monitoredSecondLevelDomain != secondLevelDomain:
         print("SubdomainSquatting: ", end='')
-        print(domain)
+        print(domain.replace(monitoredSecondLevelDomain, color(monitoredSecondLevelDomain, 'RED')))
 
 
 def streamIngest(domain):
