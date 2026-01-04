@@ -11,7 +11,7 @@ monitoredDomainsList = []
 counter = 0
 comboSwappingDetectionTreshold = 4; # 1: flag any domain that has the string of the secondLevelDomain in it
                                     # 2: flag any domain that "secondLevelDomain-" (or _) in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
-                                    # 3: flag any domain that has "-secondLevelDomain" (or _) in it. login-example-uber.com will be flagged, example-login.com will not be flagged
+                                    # 3: flag any domain that has "-secondLevelDomain" (or _) in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
                                     # 4: flag any domain that has "-secondLevelDomain.topLevelDomain" (or _) in it(meaning it has to end on our Fully qualified monitored domain.
                                     #    login-example.com will be flagged, login-example-uber.com will not be flagged
 
@@ -53,7 +53,7 @@ def detectTLDSquatting(monitoredDomain, domain):
     monitoredSecondLevelDomain = monitoredDomain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     secondLevelDomain = domain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
-    monitoredTopLevelDomain = monitoredDomain.split(".")[-1].split("\n")[0]     # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
+    monitoredTopLevelDomain = monitoredDomain.split(".")[-1]     # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
 
@@ -85,6 +85,7 @@ def detectSubdomainSquatting(monitoredDomain, domain):
 
 def streamIngest(domain):
     for monitoredDomain in monitoredDomainsList:
+        monitoredDomain = monitoredDomain.split("\n")[0] # The string includes a \n at the end which we need to remove for proper parsing later
         detectComboSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
         # detectTypoSquatting(monitoredDomain, domain)     # This does produce too many false positves right now, ai detection?
