@@ -1,6 +1,3 @@
-amazon.com
 discord.com
-binance.com
-coinbase.com
-kraken.com
-crypto.com
+amazon.com
+paypal.com

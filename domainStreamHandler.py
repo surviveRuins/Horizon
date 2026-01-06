@@ -9,10 +9,12 @@ import base64
 
 monitoredDomainsList = []
 counter = 0
-comboSwappingDetectionTreshold = 4; # 1: flag any domain that has the string of the secondLevelDomain in it
-                                    # 2: flag any domain that "secondLevelDomain-" (or _) in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
-                                    # 3: flag any domain that has "-secondLevelDomain" (or _) in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
-                                    # 4: flag any domain that has "-secondLevelDomain.topLevelDomain" (or _) in it(meaning it has to end on our Fully qualified monitored domain.
+comboSwappingDetectionTreshold = 2; # 1: flag any domain that has the string of the secondLevelDomain in it
+                                    # 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will
+                                    #    not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
+                                    # 3: flag any domain that "secondLevelDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
+                                    # 4: flag any domain that has "-secondLevelDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
+                                    # 5: flag any domain that has "-secondLevelDomain.topLevelDomain" in it(meaning it has to end on our Fully qualified monitored domain.
                                     #    login-example.com will be flagged, login-example-uber.com will not be flagged
 
 with open(sys.argv[1], "r") as file:
@@ -47,11 +49,18 @@ def detectComboSquatting(monitoredDomain, domain):
             if f"{secondLevelDomain}-" in domain:
                 print("Combosquatting: ", end='')
                 print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
-        case 3:
             if f"-{secondLevelDomain}" in domain:
                 print("Combosquatting: ", end='')
                 print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
+        case 3:
+            if f"{secondLevelDomain}-" in domain:
+                print("Combosquatting: ", end='')
+                print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
         case 4:
+            if f"-{secondLevelDomain}" in domain:
+                print("Combosquatting: ", end='')
+                print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
+        case 5:
             if f"-{monitoredDomain}" in domain:
                 print("Combosquatting: ", end='')
                 print(domain.replace(f"-{monitoredDomain}", color(f"-{monitoredDomain}", 'RED')))
