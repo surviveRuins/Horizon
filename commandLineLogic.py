@@ -3,6 +3,7 @@ import domainStreamHandler
 
 def initCLI(newDomain):
     domainStreamHandler.streamIngest(newDomain) 
-    typer.run(streamIngest)
+
+
 
 
