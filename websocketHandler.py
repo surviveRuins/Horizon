@@ -1,6 +1,6 @@
 import json
 import sys
-import commandLineLogic
+import domainStreamHandler
 
 def onMessage(ws, message):
     # A new domain was added to a Certificate Transparency Log, my certwatch server detected the change in a 
@@ -12,7 +12,7 @@ def onMessage(ws, message):
         if "*." in newDomain:                       # Detect Wildcards 
             newDomain = newDomain[2:]               # Normalize them to regular domains by removing the *. in *.example.com 
         
-        commandLineLogic.initCLI(newDomain)
+        domainStreamHandler.streamIngest(newDomain)
 
 
 def onError(ws, error):

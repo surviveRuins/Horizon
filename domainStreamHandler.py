@@ -1,5 +1,6 @@
 import sys
 from rapidfuzz.distance import DamerauLevenshtein
+import commandLineLogic
 
 # This is the handler for the domain stream coming in, We get raw domains with wildcards removed as a string.
 # Everytime the streamIngest function is called 1 new domain was sent to the websocket client by my server.
@@ -15,10 +16,6 @@ comboSwappingDetectionTreshold = 2; # 1: flag any domain that has the string of 
                                     # 4: flag any domain that has "-secondLevelDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
                                     # 5: flag any domain that has "-secondLevelDomain.topLevelDomain" in it(meaning it has to end on our Fully qualified monitored domain.
                                     #    login-example.com will be flagged, login-example-uber.com will not be flagged
-
-with open(sys.argv[1], "r") as file:
-    for monitoredDomain in file:
-        monitoredDomainsList.append(monitoredDomain)
 
 class Colors:
     RED = '\033[31m'      # Errors / [!]
@@ -121,6 +118,9 @@ def detectSubdomainSquatting(monitoredDomain, domain):
 
 
 def streamIngest(domain):
+
+    monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
+
     for monitoredDomain in monitoredDomainsList:
         monitoredDomain = monitoredDomain.split("\n")[0] # The string includes a \n at the end which we need to remove for proper parsing later
         detectComboSquatting(monitoredDomain, domain)
