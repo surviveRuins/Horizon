@@ -11,8 +11,16 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 def initCLI():
     app()
 
+abc = "hey\n\nho"
+combo_squatting_mode_help_message = "The mode you want to operate the combosquatting detection in:\n\n1: a\n\n2: b\n\n3:c\n\n4:d\n\n5:e"
+
 @app.command()
-def parseFlagsAndArgs(monitored_domains_list: str = "", monitored_domain: str = ""):
+def monitor(
+        monitored_domains_list: str = typer.Option(None, "-dL", help="List of domains you want to monitor for domain squatting attemps"),
+        #monitored_domains: str = typer.Option(None, "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times"),
+        monitored_domains: str = typer.Option(None, "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times"),
+        combo_squatting_mode: str = typer.Option(None, "-cM", help=combo_squatting_mode_help_message),
+):
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
 
     if(monitored_domains_list):
