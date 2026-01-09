@@ -1,5 +1,5 @@
 import websocket
-from horizon import websocketHandler
+import websocketHandler
 
 def connect():
     # wss:// connects only on https and ws:// connects only on http. Since my server doesn't have a TLS cert and is direct IP address we will use ws://
