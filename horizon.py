@@ -12,6 +12,7 @@ banner = """\033[31m
 \033[0m"""
 
 
+
 def main():
     print(banner)
     commandLineLogic.initCLI()
