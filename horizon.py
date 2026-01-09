@@ -1,4 +1,4 @@
-import commandLineLogic  # omit the .py, this is my websocketConnection.py file. It integrates as a module and I kind of behaves like a class
+from horizon import commandLineLogic  # omit the .py, this is my websocketConnection.py file. It integrates as a module and I kind of behaves like a class
                             # You can call its functions in the schema: myModule.myFunction()
 
 banner = """\033[31m
@@ -11,6 +11,9 @@ banner = """\033[31m
 
 \033[0m"""
 
-if __name__ == "__main__": 
+
+def main():
     print(banner)
     commandLineLogic.initCLI()
+
+main()

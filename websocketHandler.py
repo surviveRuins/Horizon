@@ -1,6 +1,6 @@
 import json
 import sys
-import domainStreamHandler
+from horizon import domainStreamHandler
 
 def onMessage(ws, message):
     # A new domain was added to a Certificate Transparency Log, my certwatch server detected the change in a 

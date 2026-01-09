@@ -1,6 +1,6 @@
 import typer
-import websocketConnection
-import monitoredDomainsFileReader
+from horizon import websocketConnection
+from horizon import monitoredDomainsFileReader
 
 
 # Global variable because I don't want to pass this all the way trough the call stack, don't want to open the file for every new domain and don't want to overengineer right now
