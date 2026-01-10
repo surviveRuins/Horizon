@@ -34,8 +34,11 @@ amazon.com:
 Currently the following domain squatting techniques can be detected:
 
 - ComboSquatting     : An Attacker registers a domain name that contains the SLD of the offical domain but adds a hyphen and a word before or after. Example: amazon-login.com, free-amazon.com
-- TLDSquatting       : An Attacker registers a domain name that has the same SLD as the offical domain but registers it with a different TLD. Example: amazon.monster, amazon.tatoo, amazon.dev 
+
+- TLDSquatting       : An Attacker registers a domain name that has the same SLD as the offical domain but registers it with a different TLD. Example: amazon.monster, amazon.tatoo, amazon.dev
+
 - TypoSquatting      : An Attacker registers a domain name that users might accidentally type into the URL bar or mistake as the official domain at first glance. Example: amazom.com, amazo.com
+
 - SubdomainSquatting : An Attacker registers an arbitiary domain name and adds the offical SLD as a subdomain. Not to be confused with subdomain takeovers. Example: amazon.securelogin.com, amazon.marketplace.com
 
 ---
