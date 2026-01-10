@@ -10,6 +10,16 @@ Squatting/Impersonation of Domains by malicious third parties might trick users 
 
 Horizon operates on a best-effort model with the goal to give insight into the frequency of such attempts against popular domains and help anybody detect domain squatting attemtps
 
+## Install
+
+```bash
+git clone https://github.com/surviveRuins/Horizon
+cd Horizon
+chmod +x ./install-local.sh
+./install-local.sh
+printf "Install complete, run using ./horizon --help"
+```
+
 ## General domain basics
 
 General terminology needed to understand this readme and the squattin technqiues that can be detectedby Horizon.
