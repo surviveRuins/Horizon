@@ -27,6 +27,14 @@ def monitor(
         monitored_domains: Annotated[list[str], typer.Option("-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
         combo_squatting_mode: str = typer.Option(None, "-cM", help=combo_squatting_mode_help_message),
 ):
+    """
+    Examples: 
+
+    python3 horizon.py -dL monitoredDomains.txt -cM 2\n\n
+    python3 horizon.py -dL monitoredDomains.txt -cM 3\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -cM 5\n\n
+    python3 horizon.py -d discord.com -cM 5\n
+    """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
 
