@@ -8,7 +8,6 @@ import commandLineLogic
 # I did some testing by printing them all here and running wscat on a seperate maschine but it genuinly seems to work perfectly.
 
 monitoredDomainsList = []
-processedDomainsCounter = 0
 comboSquattingDetectionTreshold = 1; # 1: flag any domain that has the string of the secondLevelDomain in it
                                     # 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will
                                     #    not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
@@ -16,7 +15,6 @@ comboSquattingDetectionTreshold = 1; # 1: flag any domain that has the string of
                                     # 4: flag any domain that has "-secondLevelDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
                                     # 5: flag any domain that has "-secondLevelDomain.topLevelDomain" in it(meaning it has to end on our Fully qualified monitored domain.
                                     #    login-example.com will be flagged, login-example-uber.com will not be flagged
-
 class Colors:
     RED = '\033[31m'      # Errors / [!]
     GREEN = '\033[32m'    # Success / [+]
@@ -25,6 +23,7 @@ class Colors:
     RESET = '\033[0m'     # Reset to default
 
 
+    
 
 def color(pSecondLevelDomain, pColor):
     return f"{getattr(Colors, pColor)}{pSecondLevelDomain}{Colors.RESET}"
@@ -127,10 +126,5 @@ def streamIngest(domain):
         monitoredDomain = monitoredDomain.split("\n")[0] # The string includes a \n at the end which we need to remove for proper parsing later
         detectComboSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
-        detectTypoSquatting(monitoredDomain, domain)     # This does produce too many false positves right now, ai detection?
+        detectTypoSquatting(monitoredDomain, domain)     # Add AI detection additionally, false positve rate is not too high right now?
         detectSubdomainSquatting(monitoredDomain, domain)
-
-    global processedDomainsCounter
-    processedDomainsCounter += 1
-
-    
