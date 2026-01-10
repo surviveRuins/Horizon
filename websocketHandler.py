@@ -5,11 +5,13 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.align import Align
 import domainStreamHandler
+import commandLineLogic
+
 
 processedDomainsCounter = 0
 console = Console()
 live = Live(console = console, refresh_per_second = 1)  # This cannot be initialized in a function that is called more than once in horizon or it will spam the terminal
-                                                         # To update the one `Live` object we have we strictly use live.update and that can be called in while loops and works as expected 
+                                                            # To update the one `Live` object we have we strictly use live.update and that can be called in while loops and works as expected 
 
 def onMessage(ws, message):
     # A new domain was added to a Certificate Transparency Log, my certwatch server detected the change in a 
@@ -22,18 +24,22 @@ def onMessage(ws, message):
             newDomain = newDomain[2:]               # Normalize them to regular domains by removing the *. in *.example.com 
         
         domainStreamHandler.streamIngest(newDomain)
-        global processedDomainsCounter
-        processedDomainsCounter += 1
-        live.update(Panel(f"Domains processed: {processedDomainsCounter}"))
+
+        if not commandLineLogic.getDisableProgressBar():
+            global processedDomainsCounter
+            processedDomainsCounter += 1
+            live.update(Panel(f"Domains processed: {processedDomainsCounter}"))
 
 def onError(ws, error):
     print(f"Encountered error: {error}")
 
 def onClose(ws, closeStatusCode, closeMsg):
-    live.stop()
+    if not commandLineLogic.getDisableProgressBar():
+        live.stop()
     print("Connection closed")
 
 def onOpen(ws):
     print("Connection opened")
-    live.start()
+    if not commandLineLogic.getDisableProgressBar():
+        live.start()
     ws.send("Hello, Server!")

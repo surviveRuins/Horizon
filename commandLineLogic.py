@@ -6,6 +6,7 @@ from typing import Annotated
 # Global variable because I don't want to pass this all the way trough the call stack, don't want to open the file for every new domain and don't want to overengineer right now
 global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
+global_disable_progress_bar = 0
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
 
@@ -26,6 +27,7 @@ def monitor(
         monitored_domains_list: str = typer.Option(None, "-dL", help="List of domains you want to monitor for domain squatting attemps"),
         monitored_domains: Annotated[list[str], typer.Option("-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
         combo_squatting_mode: str = typer.Option(None, "-cM", help=combo_squatting_mode_help_message),
+        disable_progress_bar: bool = typer.Option(None, "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting")
 ):
     """
     Examples: 
@@ -34,9 +36,14 @@ def monitor(
     python3 horizon.py -dL monitoredDomains.txt -cM 3\n\n
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -cM 5\n\n
     python3 horizon.py -d discord.com -cM 5\n
+    python3 horizon.py -d discord.com -cM 5 -dP\n
     """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
+
+    if(disable_progress_bar):
+        global global_disable_progress_bar
+        global_disable_progress_bar = True
 
     if(monitored_domains_list):
 
@@ -64,6 +71,7 @@ def monitor(
         for monitored_domain in monitored_domains:
             global_monitoredDomainsList.append(monitored_domain) 
         websocketConnection.connect() 
+
     else:
         print("Invalid command provided. Please run again with --help")
 
@@ -72,3 +80,6 @@ def getMonitoredDomainsList():
 
 def getComboSquattingDetectionMethod():
     return int(global_comboSquattingDetectionMethod)
+
+def getDisableProgressBar():
+    return global_disable_progress_bar
