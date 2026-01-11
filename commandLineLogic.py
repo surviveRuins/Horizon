@@ -24,10 +24,10 @@ The mode you want to operate the combosquatting detection in:
 
 @app.command()
 def monitor(
-        monitored_domains_list: str = typer.Option(None, "-dL", help="List of domains you want to monitor for domain squatting attemps"),
-        monitored_domains: Annotated[list[str], typer.Option("-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
-        combo_squatting_mode: str = typer.Option(None, "-cM", help=combo_squatting_mode_help_message),
-        disable_progress_bar: bool = typer.Option(None, "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting")
+        monitored_domains_list: str = typer.Option(None, "--domain-list", "-dL", help="List of domains you want to monitor for domain squatting attempts"),
+        monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
+        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
+        disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting")
 ):
     """
     Examples: 
@@ -36,7 +36,7 @@ def monitor(
     python3 horizon.py -dL monitoredDomains.txt -cM 3\n\n
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -cM 5\n\n
     python3 horizon.py -d discord.com -cM 5\n
-    python3 horizon.py -d discord.com -cM 5 -dP\n
+    python3 horizon.py -d discord.com -cM 5 -nP\n
     """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
