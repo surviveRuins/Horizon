@@ -32,6 +32,7 @@ amazon.com:
 ## General Certificate Transparency basics
 
 Everytime a domain registeres or renews(lesser known!) a TLS certificate from a Certificate Authority, it is logged to a publicially accessible, decentralized Certificate Transparency Log.
+
 Horizon connects to a Certificate Transparency Stream server like https://github.com/d-Rickyy-b/certstream-server-go via websockets and monitors the data for domain squatting attempts.
 
 ## Squatting techniques
