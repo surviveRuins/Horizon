@@ -8,7 +8,7 @@ global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
 global_damerauLevensheinSimilarityTreshhold = 0.7
-global_cerstream_url = "ws://138.199.224.29:8080/domains-only"
+global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
 
@@ -32,10 +32,10 @@ damerau_levenshtein_similarity_treshhold_message = """
 def monitor(
         monitored_domains_list: str = typer.Option(None, "--domain-list", "-dL", help="List of domains you want to monitor for domain squatting attempts"),
         monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
-        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
         disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-sT", help=damerau_levenshtein_similarity_treshhold_message),
         certstream_url: str = typer.Option(None, "--certstream-url", "-cU", help="The URL of the cerstream server that exposes a websocket"),
+        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
 ):
     """
     Examples: 

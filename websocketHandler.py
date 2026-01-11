@@ -39,7 +39,7 @@ def onClose(ws, closeStatusCode, closeMsg):
     print("Connection closed")
 
 def onOpen(ws):
-    print("Connection opened")
+    print(f"\nSuccesfully connected to certstream websocket at {commandLineLogic.getCertstreamURL()}\n")
     if not commandLineLogic.getDisableProgressBar():
         live.start()
     ws.send("Hello, Server!")
