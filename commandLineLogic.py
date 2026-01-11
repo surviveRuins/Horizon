@@ -8,6 +8,7 @@ global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
 global_damerauLevensheinSimilarityTreshhold = 0.7
+global_cerstream_url = "ws://138.199.224.29:8080/domains-only"
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
 
@@ -34,16 +35,17 @@ def monitor(
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
         disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-sT", help=damerau_levenshtein_similarity_treshhold_message),
+        certstream_url: str = typer.Option(None, "--certstream-url", "-cU", help="The URL of the cerstream server that exposes a websocket"),
 ):
     """
     Examples: 
 
-    python3 horizon.py -dL monitoredDomains.txt -cM 2\n\n
-    python3 horizon.py -dL monitoredDomains.txt -cM 3\n\n
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -cM 5\n\n
-    python3 horizon.py -d discord.com -cM 5\n
-    python3 horizon.py -d discord.com -cM 5 -nP\n
-    python3 horizon.py -d discord.com -cM 5 -sT \n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -dL monitoredDomains.txt -cM 2\n\n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -dL monitoredDomains.txt -cM 3\n\n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -cM 5\n\n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5\n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5 -nP\n
+    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5 -sT 0.7\n
     """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
@@ -55,6 +57,10 @@ def monitor(
     if(damerau_levenshein_similarity_treshhold):
         global global_damerauLevensheinSimilarityTreshhold
         global_damerauLevensheinSimilarityTreshhold = damerau_levenshein_similarity_treshhold
+
+    if(certstream_url):
+        global global_cerstream_url
+        global_cerstream_url = certstream_url
 
     if(monitored_domains_list):
 
@@ -97,3 +103,6 @@ def getDisableProgressBar():
 
 def getDamerauLevensheinSimilarityTreshhold():
     return float(global_damerauLevensheinSimilarityTreshhold)
+
+def getCertstreamURL():
+    return global_cerstream_url
