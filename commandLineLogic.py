@@ -7,6 +7,7 @@ from typing import Annotated
 global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
+global_damerauLevensheinSimilarityTreshhold = 0.7
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
 
@@ -22,12 +23,17 @@ The mode you want to operate the combosquatting detection in:
     \n\n- 5: flag any domain that has "-secondLevelDomain.topLevelDomain" in it(meaning it has to end on our Fully qualified monitored domain. login-example.com will be flagged, login-example-uber.com won't be flagged
 """
 
+damerau_levenshtein_similarity_treshhold_message = """
+    How similar the domain needs to be to be detected as typosquatting. Input from 0.0 - 1.0. Uses Damerau Levenshtein Distance normalized to 0.0-1.0
+"""
+
 @app.command()
 def monitor(
         monitored_domains_list: str = typer.Option(None, "--domain-list", "-dL", help="List of domains you want to monitor for domain squatting attempts"),
         monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
-        disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting")
+        disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
+        damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-sT", help=damerau_levenshtein_similarity_treshhold_message),
 ):
     """
     Examples: 
@@ -37,6 +43,7 @@ def monitor(
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -cM 5\n\n
     python3 horizon.py -d discord.com -cM 5\n
     python3 horizon.py -d discord.com -cM 5 -nP\n
+    python3 horizon.py -d discord.com -cM 5 -sT \n
     """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
@@ -44,6 +51,10 @@ def monitor(
     if(disable_progress_bar):
         global global_disable_progress_bar
         global_disable_progress_bar = True
+
+    if(damerau_levenshein_similarity_treshhold):
+        global global_damerauLevensheinSimilarityTreshhold
+        global_damerauLevensheinSimilarityTreshhold = damerau_levenshein_similarity_treshhold
 
     if(monitored_domains_list):
 
@@ -83,3 +94,6 @@ def getComboSquattingDetectionMethod():
 
 def getDisableProgressBar():
     return global_disable_progress_bar
+
+def getDamerauLevensheinSimilarityTreshhold():
+    return float(global_damerauLevensheinSimilarityTreshhold)

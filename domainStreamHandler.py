@@ -97,7 +97,7 @@ def detectTypoSquatting(monitoredDomain, domain):
         print(color(domain, 'RED'))
     """
 
-    if(damerauLevenshteinSimilaritySLD >= 0.7):
+    if(damerauLevenshteinSimilaritySLD >= commandLineLogic.getDamerauLevensheinSimilarityTreshhold()):
         if(secondLevelDomain != monitoredSecondLevelDomain): # We don't want exact matches because it increases false positives and spam and our TLD Squatting detection method will handle it
             print("TypoSquatting: ", end='')
             print(f"{domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED'))} is {int(round(damerauLevenshteinSimilaritySLD, 2) * 100 )}% similar to {monitoredDomain}")
