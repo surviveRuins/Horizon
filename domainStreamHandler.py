@@ -1,5 +1,6 @@
 import sys
 from rapidfuzz.distance import DamerauLevenshtein
+import math
 import commandLineLogic
 
 # This is the handler for the domain stream coming in, We get raw domains with wildcards removed as a string.
@@ -99,7 +100,8 @@ def detectTypoSquatting(monitoredDomain, domain):
     if(damerauLevenshteinSimilaritySLD >= 0.7):
         if(secondLevelDomain != monitoredSecondLevelDomain): # We don't want exact matches because it increases false positives and spam and our TLD Squatting detection method will handle it
             print("TypoSquatting: ", end='')
-            print(domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED')))
+            print(f"{domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED'))} is {int(round(damerauLevenshteinSimilaritySLD, 2) * 100)}% similar to {monitoredDomain}")
+
 
 def detectSubdomainSquatting(monitoredDomain, domain):
 
