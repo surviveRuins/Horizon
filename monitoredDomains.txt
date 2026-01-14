@@ -1,15 +1,8 @@
-amazon.com
 paypal.com
 apple.com
 netflix.com
-linkedin.com
-dropbox.com
-icloud.com
 google.com
-microsoft.com
 facebook.com
-instagram.com
-discord.com
 bund.de
 bundesregierung.de
 bayern.de
