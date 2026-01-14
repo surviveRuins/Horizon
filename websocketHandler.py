@@ -31,7 +31,7 @@ def onMessage(ws, message):
             live.update(Panel(f"Domains processed: {processedDomainsCounter}"))
 
 def onError(ws, error):
-    print(f"Encountered error: {error}")
+    pass
 
 def onClose(ws, closeStatusCode, closeMsg):
     if not commandLineLogic.getDisableProgressBar():
@@ -39,7 +39,7 @@ def onClose(ws, closeStatusCode, closeMsg):
     print("Connection closed")
 
 def onOpen(ws):
-    print(f"\nSuccesfully connected to certstream websocket at {commandLineLogic.getCertstreamURL()}\n")
+    print(f"\nSuccessfully connected to certstream websocket at {commandLineLogic.getCertstreamURL()}\n")
     if not commandLineLogic.getDisableProgressBar():
         live.start()
     ws.send("Hello, Server!")
