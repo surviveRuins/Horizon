@@ -30,22 +30,22 @@ damerau_levenshtein_similarity_treshhold_message = """
 
 @app.command()
 def monitor(
-        monitored_domains_list: str = typer.Option(None, "--domain-list", "-dL", help="List of domains you want to monitor for domain squatting attempts"),
+        monitored_domains_list: str = typer.Option(None, "--domain-list", "-l", help="List of domains you want to monitor for domain squatting attempts"),
         monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
-        disable_progress_bar: bool = typer.Option(False,"--no-progress", "-nP", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
-        damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-sT", help=damerau_levenshtein_similarity_treshhold_message),
-        certstream_url: str = typer.Option(None, "--certstream-url", "-cU", help="The URL of the cerstream server that exposes a websocket"),
-        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-cM", help=combo_squatting_mode_help_message),
+        disable_progress_bar: bool = typer.Option(False,"--no-progress", "-n", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
+        damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-t", help=damerau_levenshtein_similarity_treshhold_message),
+        certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
+        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
 ):
     """
     Examples: 
 
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -dL monitoredDomains.txt -cM 2\n\n
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -dL monitoredDomains.txt -cM 3\n\n
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -cM 5\n\n
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5\n
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5 -nP\n
-    python3 horizon.py -cU ws://138.199.224.29:8080/domains-only -d discord.com -cM 5 -sT 0.7\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 3\n\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -m 5\n\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -n\n
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -t 0.7\n
     """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
