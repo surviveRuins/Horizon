@@ -22,7 +22,7 @@ printf "Install complete, run using ./horizon --help"
 
 ## General domain basics
 
-General terminology needed to understand this readme and the squattin technqiues that can be detectedby Horizon.
+General terminology needed to understand this README and the squatting techniques that can be detected by Horizon.
 
 amazon.com:
 
@@ -31,13 +31,13 @@ amazon.com:
 
 ## General Certificate Transparency basics
 
-Everytime a domain registeres or renews(lesser known!) a TLS certificate from a Certificate Authority, it is logged to a publicially accessible, decentralized Certificate Transparency Log.
+Every time a domain registeres or renews(lesser known!) a TLS certificate from a Certificate Authority, it is logged to a publicially accessible, decentralized Certificate Transparency Log.
 
 Horizon connects to a Certificate Transparency Stream server like https://github.com/d-Rickyy-b/certstream-server-go via websockets and monitors the data for domain squatting attempts.
 
 ## Squatting techniques
 
-Currently the following domain squatting techniques can be detected:
+Currently the following domain squatting(also called cyber squatting) techniques can be detected:
 
 - ComboSquatting     : An Attacker registers a domain name that contains the SLD of the offical domain but adds a hyphen and a word before or after. Example: amazon-login.com, free-amazon.com
 
