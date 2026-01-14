@@ -10,6 +10,23 @@ global_disable_progress_bar = 0
 global_damerauLevensheinSimilarityTreshhold = 0.7
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
 
+# Not sure why this is how the formatting has to be to produce newlines...
+usageExampleString = """
+    **Examples:**\n\n 
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 3\n\n
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -m 5\n\n
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5\n\n
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -n\n\n
+
+    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -t 0.7\n\n
+"""
+
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
 
 def initCLI():
@@ -28,7 +45,7 @@ damerau_levenshtein_similarity_treshhold_message = """
     How similar the domain needs to be to be detected as typosquatting. Input from 0.0 - 1.0. Uses Damerau Levenshtein Distance normalized to 0.0-1.0
 """
 
-@app.command()
+@app.command(epilog = usageExampleString)
 def monitor(
         monitored_domains_list: str = typer.Option(None, "--domain-list", "-l", help="List of domains you want to monitor for domain squatting attempts"),
         monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
@@ -37,16 +54,6 @@ def monitor(
         certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
 ):
-    """
-    Examples: 
-
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 3\n\n
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -m 5\n\n
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5\n
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -n\n
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -t 0.7\n
-    """
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
 
