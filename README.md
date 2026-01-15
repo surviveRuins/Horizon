@@ -39,7 +39,7 @@ Horizon connects to a Certificate Transparency Stream server like https://github
 
 Currently the following domain squatting(also called cyber squatting) techniques can be detected:
 
-- ComboSquatting     : An Attacker registers a domain name that contains the SLD of the offical domain but adds a hyphen and a word before or after. Example: amazon-login.com, free-amazon.com
+- LevelSquatting     : An Attacker registers a domain name that contains the SLD of the offical domain but adds a hyphen and a word before or after. Example: amazon-login.com, free-amazon.com
 
 - TLDSquatting       : An Attacker registers a domain name that has the same SLD as the offical domain but registers it with a different TLD. Example: amazon.monster, amazon.tatoo, amazon.dev
 

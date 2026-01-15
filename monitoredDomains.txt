@@ -1,8 +1,3 @@
-paypal.com
-apple.com
-netflix.com
-google.com
-facebook.com
 bund.de
 bundesregierung.de
 bayern.de
