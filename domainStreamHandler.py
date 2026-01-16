@@ -9,7 +9,7 @@ import commandLineLogic
 # I did some testing by printing them all here and running wscat on a seperate maschine but it genuinly seems to work perfectly.
 
 monitoredDomainsList = []
-levelSquattingDetectionTreshold = 1; # 1: flag any domain that has the string of the secondLevelDomain in it
+comboSquattingDetectionTreshold = 1;# 1: flag any domain that has the string of the secondLevelDomain in it
                                     # 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will
                                     #    not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
                                     # 3: flag any domain that "secondLevelDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
@@ -29,36 +29,36 @@ class Colors:
 def color(pSecondLevelDomain, pColor):
     return f"{getattr(Colors, pColor)}{pSecondLevelDomain}{Colors.RESET}"
 
-def detectLevelSquatting(monitoredDomain, domain):
+def detectComboSquatting(monitoredDomain, domain):
     # Assumption for our list of monitored domains from the file given by the user in sys.argv[1]: One domain in format main.tld per line: 
-    # That means we need to seperate the `main` part as that is the only relevant thing for levelSquatting: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for levelSquatting
+    # That means we need to seperate the `main` part as that is the only relevant thing for comboSquatting: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for levelSquatting
     # In paypal.com the `.com` is called TLD(Top Level Domain) and the `paypal` is called SLD(Second Level Domain)
     
     secondLevelDomain = monitoredDomain.split(".")[0]
 
-    match(levelSquattingDetectionTreshold):
+    match(comboSquattingDetectionTreshold):
         case 1:
             if secondLevelDomain in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED')))
         case 2:
             if f"{secondLevelDomain}-" in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
             if f"-{secondLevelDomain}" in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
         case 3:
             if f"{secondLevelDomain}-" in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
         case 4:
             if f"-{secondLevelDomain}" in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
         case 5:
             if f"-{monitoredDomain}" in domain:
-                print("LevelSquatting: ", end='')
+                print("comboSquatting: ", end='')
                 print(domain.replace(f"-{monitoredDomain}", color(f"-{monitoredDomain}", 'RED')))
 
 def detectTLDSquatting(monitoredDomain, domain):
@@ -103,9 +103,9 @@ def detectTypoSquatting(monitoredDomain, domain):
             print(f"{domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED'))} is {int(round(damerauLevenshteinSimilaritySLD, 2) * 100 )}% similar to {monitoredDomain}")
 
 
-def detectSubdomainSquatting(monitoredDomain, domain):
+def detectLevelSquatting(monitoredDomain, domain):
 
-    # This will detect subdomain squatting. In Subdomain Squatting an attacker registers a domain like amazon.google.attacker.org trying to phish
+    # This will detect LevelSquatting. In LevelSquatting an attacker registers a domain like amazon.google.attacker.org trying to phish
     # victims by impersonating amazon or google, when in reality it is just a subdomain of an arbitiary domain the Attacker controlls
 
     domainList = domain.split(".")
@@ -114,19 +114,19 @@ def detectSubdomainSquatting(monitoredDomain, domain):
     secondLevelDomain = domain.split(".")[-2]
 
     if monitoredSecondLevelDomain in domainList and monitoredSecondLevelDomain != secondLevelDomain:
-        print("SubdomainSquatting: ", end='')
+        print("LevelSquatting: ", end='')
         print(domain.replace(monitoredSecondLevelDomain, color(monitoredSecondLevelDomain, 'RED')))
 
 
 def streamIngest(domain):
 
-    global levelSquattingDetectionTreshold
-    levelSquattingDetectionTreshold = commandLineLogic.getLevelSquattingDetectionMethod()
+    global comboSquattingDetectionTreshold
+    comboSquattingDetectionTreshold = commandLineLogic.getLevelSquattingDetectionMethod()
     monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
 
     for monitoredDomain in monitoredDomainsList:
         monitoredDomain = monitoredDomain.split("\n")[0] # The string includes a \n at the end which we need to remove for proper parsing later
-        detectLevelSquatting(monitoredDomain, domain)
+        detectComboSquatting(monitoredDomain, domain)
         detectTLDSquatting(monitoredDomain, domain)
         detectTypoSquatting(monitoredDomain, domain)     # Add AI detection additionally, false positve rate is not too high right now?
-        detectSubdomainSquatting(monitoredDomain, domain)
+        detectLevelSquatting(monitoredDomain, domain)

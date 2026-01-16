@@ -5,7 +5,7 @@ from typing import Annotated
 
 # Global variable because I don't want to pass this all the way trough the call stack, don't want to open the file for every new domain and don't want to overengineer right now
 global_monitoredDomainsList = []
-global_levelSquattingDetectionMethod = None
+global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
 global_damerauLevensheinSimilarityTreshhold = 0.7
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
@@ -32,13 +32,13 @@ app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="
 def initCLI():
     app()
 
-level_squatting_mode_help_message = """
-The mode you want to operate the levelsquatting detection in:
-    \n\n- 1: flag any domain that has the string of the secondLevelDomain in it
-    \n\n- 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
-    \n\n- 3: flag any domain that "secondLevelDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
-    \n\n- 4: flag any domain that has "-secondLevelDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
-    \n\n- 5: flag any domain that has "-secondLevelDomain.topLevelDomain" in it(meaning it has to end on our Fully qualified monitored domain. login-example.com will be flagged, login-example-uber.com won't be flagged
+combo_squatting_mode_help_message = """
+The mode you want to operate the combosquatting detection in:
+    \n\n- 1: flag any domain that has the string of the secondcomboDomain in it
+    \n\n- 2: flag any domain that "secondcomboDomain-" or "-secondcomboDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
+    \n\n- 3: flag any domain that "secondcomboDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
+    \n\n- 4: flag any domain that has "-secondcomboDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
+    \n\n- 5: flag any domain that has "-secondcomboDomain.topcomboDomain" in it(meaning it has to end on our Fully qualified monitored domain. login-example.com will be flagged, login-example-uber.com won't be flagged
 """
 
 damerau_levenshtein_similarity_treshhold_message = """
@@ -52,10 +52,11 @@ def monitor(
         disable_progress_bar: bool = typer.Option(False,"--no-progress", "-n", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-t", help=damerau_levenshtein_similarity_treshhold_message),
         certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
-        level_squatting_mode: str = typer.Option(None,"--level-mode", "-m", help=level_squatting_mode_help_message),
+        combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
+        exclude_detection_mode: Annotated[list[str], typer.Option("--exclude", "-x", help="test")] = None,
 ):
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
-    global global_levelSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
+    global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
 
     if(disable_progress_bar):
         global global_disable_progress_bar
@@ -69,13 +70,25 @@ def monitor(
         global global_cerstream_url
         global_cerstream_url = certstream_url
 
+    if(exclude_detection_mode):
+        match(exclude_detection_mode):
+            case "combo":
+                print(1)
+            case "tld":
+                print(1)
+            case "type":
+                print(1)
+            case "level":
+                print(1)
+            
+
     if(monitored_domains_list):
 
-        if(level_squatting_mode):
-            if(int(level_squatting_mode) in [1,2,3,4,5]):
-                global_levelSquattingDetectionMethod = level_squatting_mode
+        if(combo_squatting_mode):
+            if(int(combo_squatting_mode) in [1,2,3,4,5]):
+                global_comboSquattingDetectionMethod = combo_squatting_mode
             else:
-                print("levelSquattingDetectionMethod -cM is not a valid value: 1,2,3,4 or 5")
+                print("comboSquattingDetectionMethod -cM is not a valid value: 1,2,3,4 or 5")
                 raise typer.Exit()
 
 
@@ -84,11 +97,11 @@ def monitor(
 
     elif(monitored_domains):
 
-        if(level_squatting_mode):
-            if(int(level_squatting_mode) in [1,2,3,4,5]):
-                global_levelSquattingDetectionMethod = level_squatting_mode
+        if(combo_squatting_mode):
+            if(int(combo_squatting_mode) in [1,2,3,4,5]):
+                global_comboSquattingDetectionMethod = combo_squatting_mode
             else:
-                print("levelSquattingDetectionMethod -cM is not a valid value: 1,2,3,4 or 5")
+                print("comboSquattingDetectionMethod -cM is not a valid value: 1,2,3,4 or 5")
                 raise typer.Exit()
 
 
@@ -102,8 +115,8 @@ def monitor(
 def getMonitoredDomainsList():
     return global_monitoredDomainsList
 
-def getLevelSquattingDetectionMethod():
-    return int(global_levelSquattingDetectionMethod)
+def getcomboSquattingDetectionMethod():
+    return int(global_comboSquattingDetectionMethod)
 
 def getDisableProgressBar():
     return global_disable_progress_bar
