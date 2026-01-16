@@ -75,11 +75,11 @@ def monitor(
             case "combo":
                 print(1)
             case "tld":
-                print(1)
+                print(2)
             case "type":
-                print(1)
+                print(3)
             case "level":
-                print(1)
+                print(4)
             
 
     if(monitored_domains_list):
@@ -115,7 +115,7 @@ def monitor(
 def getMonitoredDomainsList():
     return global_monitoredDomainsList
 
-def getcomboSquattingDetectionMethod():
+def getComboSquattingDetectionMethod():
     return int(global_comboSquattingDetectionMethod)
 
 def getDisableProgressBar():

@@ -31,9 +31,9 @@ def color(pSecondLevelDomain, pColor):
 
 def detectComboSquatting(monitoredDomain, domain):
     # Assumption for our list of monitored domains from the file given by the user in sys.argv[1]: One domain in format main.tld per line: 
-    # That means we need to seperate the `main` part as that is the only relevant thing for comboSquatting: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for levelSquatting
+    # That means we need to seperate the `main` part as that is the only relevant thing for comboSquatting: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for comboSquatting
     # In paypal.com the `.com` is called TLD(Top Level Domain) and the `paypal` is called SLD(Second Level Domain)
-    
+
     secondLevelDomain = monitoredDomain.split(".")[0]
 
     match(comboSquattingDetectionTreshold):
@@ -121,7 +121,7 @@ def detectLevelSquatting(monitoredDomain, domain):
 def streamIngest(domain):
 
     global comboSquattingDetectionTreshold
-    comboSquattingDetectionTreshold = commandLineLogic.getLevelSquattingDetectionMethod()
+    comboSquattingDetectionTreshold = commandLineLogic.getComboSquattingDetectionMethod()
     monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
 
     for monitoredDomain in monitoredDomainsList:
