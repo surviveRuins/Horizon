@@ -39,26 +39,26 @@ def detectComboSquatting(monitoredDomain, domain):
     match(comboSquattingDetectionTreshold):
         case 1:
             if secondLevelDomain in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(secondLevelDomain, color(secondLevelDomain, 'RED')))
         case 2:
             if f"{secondLevelDomain}-" in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
             if f"-{secondLevelDomain}" in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
         case 3:
             if f"{secondLevelDomain}-" in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(f"{secondLevelDomain}-", color(f"{secondLevelDomain}-", 'RED')))
         case 4:
             if f"-{secondLevelDomain}" in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(f"-{secondLevelDomain}", color(f"-{secondLevelDomain}", 'RED')))
         case 5:
             if f"-{monitoredDomain}" in domain:
-                print("comboSquatting: ", end='')
+                print("ComboSquatting: ", end='')
                 print(domain.replace(f"-{monitoredDomain}", color(f"-{monitoredDomain}", 'RED')))
 
 def detectTLDSquatting(monitoredDomain, domain):
