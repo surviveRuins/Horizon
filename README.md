@@ -45,7 +45,7 @@ Currently the following domain squatting(also called cyber squatting) techniques
 
 - TypoSquatting      : An Attacker registers a domain name that users might accidentally type into the URL bar or mistake as the official domain at first glance. Example: amazom.com, amazo.com
 
-- LevelSquatting     : An Attacker registers an arbitiary domain name and adds the offical SLD as a subdomain. Example: amazon.securelogin.com, amazon.marketplace.com, shop-login-amazon.com
+- LevelSquatting     : An Attacker registers an arbitiary domain name and adds the offical SLD as a subdomain. Example: amazon.securelogin.com, amazon.marketplace.com, shop.login.amazon.chk.com
 
 ---
 
