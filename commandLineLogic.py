@@ -7,7 +7,7 @@ from typing import Annotated
 global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
-global_damerauLevensheinSimilarityTreshhold = 0.7
+global_damerauLevensheinSimilarityTreshhold = 0.8
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
 global_excludedDetectionModeList = []
 

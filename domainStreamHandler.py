@@ -93,18 +93,8 @@ def detectTypoSquatting(monitoredDomain, domain):
     monitoredSecondLevelDomain = monitoredDomain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     secondLevelDomain = domain.split(".")[-2]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
-    #damerauLevenshteinSimilarityFullDomain = DamerauLevenshtein.normalized_similarity(domain, monitoredDomain)   # This is calculated by using the distance, normalizing it to a range of [0,1] and then
-                                                                                                           # doing `1 - normalized_distance`. So for a damerauLevenshteinDistance of 4: 4 --> 0.4 --> 1 - 0.4 = 0.6 Similarity
-
     damerauLevenshteinSimilaritySLD = DamerauLevenshtein.normalized_similarity(secondLevelDomain, monitoredSecondLevelDomain) # Only compare Second Level Domain. Useful extra detection Because CT Log also often is just a new subdomain and always doing
                                                                                                                # a full string comparision might lead to missed true positives for potential phishing domains
-
-    """
-    if(damerauLevenshteinSimilarityFullDomain >= 0.7):
-        print("TypoSquatting: ", end='')
-        print(color(domain, 'RED'))
-    """
-
     if(damerauLevenshteinSimilaritySLD >= commandLineLogic.getDamerauLevensheinSimilarityTreshhold()):
         if(secondLevelDomain != monitoredSecondLevelDomain): # We don't want exact matches because it increases false positives and spam and our TLD Squatting detection method will handle it
             print("TypoSquatting: ", end='')
