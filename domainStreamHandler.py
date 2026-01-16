@@ -124,9 +124,16 @@ def streamIngest(domain):
     comboSquattingDetectionTreshold = commandLineLogic.getComboSquattingDetectionMethod()
     monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
 
+    excludedDetectionModeList = commandLineLogic.getExcludedDetectionModeList()
+
     for monitoredDomain in monitoredDomainsList:
         monitoredDomain = monitoredDomain.split("\n")[0] # The string includes a \n at the end which we need to remove for proper parsing later
-        detectComboSquatting(monitoredDomain, domain)
-        detectTLDSquatting(monitoredDomain, domain)
-        detectTypoSquatting(monitoredDomain, domain)     # Add AI detection additionally, false positve rate is not too high right now?
-        detectLevelSquatting(monitoredDomain, domain)
+
+        if "combo" not in excludedDetectionModeList:
+            detectComboSquatting(monitoredDomain, domain)
+        if "tld" not in excludedDetectionModeList:
+            detectTLDSquatting(monitoredDomain, domain)
+        if "typo" not in excludedDetectionModeList:
+            detectTypoSquatting(monitoredDomain, domain)     # Add AI detection additionally, false positve rate is not too high right now?
+        if "level" not in excludedDetectionModeList:
+            detectLevelSquatting(monitoredDomain, domain)

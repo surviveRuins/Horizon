@@ -9,6 +9,7 @@ global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
 global_damerauLevensheinSimilarityTreshhold = 0.7
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
+global_excludedDetectionModeList = []
 
 # Not sure why this is how the formatting has to be to produce newlines...
 usageExampleString = """
@@ -45,15 +46,20 @@ damerau_levenshtein_similarity_treshhold_message = """
     How similar the domain needs to be to be detected as typosquatting. Input from 0.0 - 1.0. Uses Damerau Levenshtein Distance normalized to 0.0-1.0
 """
 
+exclude_detection_modes_help_message = """
+    Squatting method you don't want to be used, can be specified multiple times. Good for filtering false positives
+    or if you only want to use one detection method(to do this, exclude every detection method but the one you want)
+"""
+
 @app.command(epilog = usageExampleString)
 def monitor(
-        monitored_domains_list: str = typer.Option(None, "--domain-list", "-l", help="List of domains you want to monitor for domain squatting attempts"),
+        monitored_domains_list: str = typer.Option(None, "--domain-list", "-l", help="Path to file that contains List of domains you want to monitor for domain squatting attempts"),
         monitored_domains: Annotated[list[str], typer.Option("--domain", "-d", help="Domain you want to monitor for domain squatting attemps, can be specified multiple times")] = None,
         disable_progress_bar: bool = typer.Option(False,"--no-progress", "-n", help="Disable display at the bottom that shows how many domains have been been streamed and checked for domain squatting"),
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-t", help=damerau_levenshtein_similarity_treshhold_message),
         certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
+        exclude_detection_modes: Annotated[list[str], typer.Option("--exclude", "-x", help=exclude_detection_modes_help_message)] = None,
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
-        exclude_detection_mode: Annotated[list[str], typer.Option("--exclude", "-x", help="test")] = None,
 ):
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
     global global_comboSquattingDetectionMethod # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
@@ -70,16 +76,20 @@ def monitor(
         global global_cerstream_url
         global_cerstream_url = certstream_url
 
-    if(exclude_detection_mode):
-        match(exclude_detection_mode):
-            case "combo":
-                print(1)
-            case "tld":
-                print(2)
-            case "type":
-                print(3)
-            case "level":
-                print(4)
+    if(exclude_detection_modes):
+
+        global global_excludedDetectionModeList
+
+        for exclude_detection_mode in exclude_detection_modes:
+            match(exclude_detection_mode):
+                case "combo":
+                    global_excludedDetectionModeList.append("combo") 
+                case "tld":
+                    global_excludedDetectionModeList.append("tld") 
+                case "typo":
+                    global_excludedDetectionModeList.append("typo") 
+                case "level":
+                    global_excludedDetectionModeList.append("level") 
             
 
     if(monitored_domains_list):
@@ -126,3 +136,7 @@ def getDamerauLevensheinSimilarityTreshhold():
 
 def getCertstreamURL():
     return global_cerstream_url
+
+def getExcludedDetectionModeList():
+    global_excludedDetectionModeList
+    return global_excludedDetectionModeList
