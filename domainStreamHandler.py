@@ -8,6 +8,10 @@ import commandLineLogic
 # I can't really believe it either but all the processing doesn't seem to slow the websocket down enough to fall behind the newest state.
 # I did some testing by printing them all here and running wscat on a seperate maschine but it genuinly seems to work perfectly.
 
+#TODO: tld squatting detection doesn't work properly for multiple -d as other already known TLDs aren't registered
+
+secondAndTopLevelDomainVisitedList = []
+
 monitoredDomainsList = []
 comboSquattingDetectionTreshold = 1;# 1: flag any domain that has the string of the secondLevelDomain in it
                                     # 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will
@@ -73,12 +77,16 @@ def detectTLDSquatting(monitoredDomain, domain):
     monitoredTopLevelDomain = monitoredDomain.split(".")[-1]     # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
     topLevelDomain = domain.split(".")[-1]  # Get last element of the domainArray which by definition will always be the TLD(Top Level Domain) (assuming domains are provided as main.com and not main.com. or .com.main)
 
+    global secondAndTopLevelDomainVisitedList
+
 
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
-            print("TLDSquatting: ", end='')
             secondAndTopLevelDomain = secondLevelDomain + "." + topLevelDomain
-            print(domain.replace(secondAndTopLevelDomain, color(secondAndTopLevelDomain, 'RED')))
+            if secondAndTopLevelDomain not in secondAndTopLevelDomainVisitedList: 
+                print("TLDSquatting: ", end='')
+                print(domain.replace(secondAndTopLevelDomain, color(secondAndTopLevelDomain, 'RED')))
+                secondAndTopLevelDomainVisitedList.append(secondAndTopLevelDomain)
 
 def detectTypoSquatting(monitoredDomain, domain):
 
