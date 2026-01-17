@@ -30,6 +30,8 @@ usageExampleString = """
 
     python3 horizon.py -d discord.com -m 5 -t 0.7\n\n
 
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level"
+
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"
 """
 
