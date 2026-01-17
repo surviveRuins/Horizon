@@ -7,7 +7,8 @@ from typing import Annotated
 global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
-global_damerauLevensheinSimilarityTreshhold = 0.8
+global_damerauLevensheinSimilarityTreshhold = 0.8               # This is based on my own experience and on the reference value from https://www.splunk.com/en_us/blog/security/domain-detection-levenshtein-shannon.html
+                                                                # A treshhold of 1-2 for detection(normalized that is 0.8) seems to be the ideal value to still get valuable results but not get flooded with false positives
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
 global_excludedDetectionModeList = []
 
@@ -15,17 +16,21 @@ global_excludedDetectionModeList = []
 usageExampleString = """
     **Examples:**\n\n 
 
+    python3 horizon.py -l monitoredDomains.txt -m 2\n\n
+    
     python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
 
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 3\n\n
+    python3 horizon.py -l monitoredDomains.txt -m 3\n\n
 
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d google.com -d paypal.com -d amazon.com -m 5\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -m 5\n\n
 
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5\n\n
+    python3 horizon.py -d discord.com -m 5\n\n
 
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -n\n\n
+    python3 horizon.py -d discord.com -m 5 -n\n\n
 
-    python3 horizon.py -u ws://138.199.224.29:8080/domains-only -d discord.com -m 5 -t 0.7\n\n
+    python3 horizon.py -d discord.com -m 5 -t 0.7\n\n
+
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"
 """
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)

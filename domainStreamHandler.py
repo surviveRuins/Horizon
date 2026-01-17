@@ -132,6 +132,8 @@ def streamIngest(domain):
         if "tld" not in excludedDetectionModeList:
             detectTLDSquatting(monitoredDomain, domain)
         if "typo" not in excludedDetectionModeList:
-            detectTypoSquatting(monitoredDomain, domain)     # Add AI detection additionally, false positve rate is not too high right now?
+            detectTypoSquatting(monitoredDomain, domain)     # Pretty sure adding AI detection to Damerau Levenshtein treshhold of >= 0.8(my default) doesn't make any sense because hallucinations
+                                                             # and unclear cases will only increase the rate of false positives. I even tried it with gemini and it wasn't that good...
+                                                             # On top of that the false positive rate with a treshold of >= 0.8 is pretty low and there are bigger battles to fight rn
         if "level" not in excludedDetectionModeList:
             detectLevelSquatting(monitoredDomain, domain)
