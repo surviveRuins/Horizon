@@ -10,14 +10,25 @@ Squatting/Impersonation of Domains by malicious third parties can trick users of
 
 Horizon operates on a best-effort model with the goal to give insight into the frequency of such attempts against popular domains and help anybody detect domain squatting attemtps.
 
-## Install
+## Install - python3(linux only)
+
+```bash
+git clone https://github.com/surviveRuins/Horizon
+cd Horizon
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+printf "Install complete, run using 'python3 horizon.py --help'"
+```
+
+## Install - binary(linux only)
 
 ```bash
 git clone https://github.com/surviveRuins/Horizon
 cd Horizon
 chmod +x ./install-local.sh
 ./install-local.sh
-printf "Install complete, run using ./horizon --help"
+printf "Install complete, run using './horizon --help'"
 ```
 
 ## General domain basics
