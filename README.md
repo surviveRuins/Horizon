@@ -4,11 +4,11 @@
 
 Monitor a live Certificate Transparency Stream for domain squatting attempts to detect phishing/impersonation of your root domain assets.
 
-Squatting/Impersonation of Domains by malicious third parties might trick users of the official domain and lead to phishing and credential theft.
+Squatting/Impersonation of Domains by malicious third parties can trick users of the official domain and lead to phishing and credential theft.
 
 ---
 
-Horizon operates on a best-effort model with the goal to give insight into the frequency of such attempts against popular domains and help anybody detect domain squatting attemtps
+Horizon operates on a best-effort model with the goal to give insight into the frequency of such attempts against popular domains and help anybody detect domain squatting attemtps.
 
 ## Install
 
@@ -31,9 +31,9 @@ amazon.com:
 
 ## General Certificate Transparency basics
 
-Every time a domain registeres or renews(lesser known!) a TLS certificate from a Certificate Authority, it is logged to a publicially accessible, decentralized Certificate Transparency Log.
+Every time a domain's TLS certificate is registered, renewed or modified, the Certificate Authority managing that certificate, logs it to a publicially accessible, decentralized Certificate Transparency Log.
 
-Horizon connects to a Certificate Transparency Stream server like https://github.com/d-Rickyy-b/certstream-server-go via websockets and monitors the data for domain squatting attempts.
+Horizon connects to a Certificate Transparency Stream server like https://github.com/d-Rickyy-b/certstream-server-go via websockets and monitors the data(fetched from the instances of the Certificate Transparency Log operators and then streamed to any websocket connection on a port and path) for domain squatting attempts.
 
 ## Squatting techniques
 
