@@ -18,7 +18,7 @@ cd Horizon
 python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
-printf "Install complete, run using 'python3 horizon.py --help'"
+printf "\n\nInstall complete, run using 'python3 horizon.py --help'\n"
 ```
 
 ## Install - binary(linux only)
@@ -28,7 +28,7 @@ git clone https://github.com/surviveRuins/Horizon
 cd Horizon
 chmod +x ./install-local.sh
 ./install-local.sh
-printf "Install complete, run using './horizon --help'"
+printf "\n\nInstall complete, run using './horizon --help'\n"
 ```
 
 ## General domain basics
