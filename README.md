@@ -50,7 +50,3 @@ Currently the following domain squatting(also called cyber squatting) techniques
 ---
 
 Unilke other tools, Horizon doesn't pre-generate Permutations for the domain names that should be monitored. Instead the tool uses 4 Detection functions to check the live streamed Certificate Transparency data for the squatting methods.
-
-As with many Security tool, the risk for false positives is high. This is especially true for TypoSquatting-detection as it uses the Damerau-Levenshtein-Distance which only keeps track of edits needed to transform string1 into string2, omitting context.
-
-
