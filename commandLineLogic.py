@@ -5,7 +5,7 @@ from typing import Annotated
 
 # Global variable because I don't want to pass this all the way trough the call stack, don't want to open the file for every new domain and don't want to overengineer right now
 global_monitoredDomainsList = []
-global_comboSquattingDetectionMethod = None
+global_comboSquattingDetectionMethod = 2
 global_disable_progress_bar = 0
 global_DomainStringBlacklist = []
 global_damerauLevensheinSimilarityTreshhold = 0.8               # This is based on my own experience and on the reference value from https://www.splunk.com/en_us/blog/security/domain-detection-levenshtein-shannon.html
@@ -17,7 +17,7 @@ global_excludedDetectionModeList = []
 usageExampleString = """
     **Examples:**\n\n 
 
-    python3 horizon.py -l monitoredDomains.txt -m 2\n\n
+    python3 horizon.py -l monitoredDomains.txt -m 2\n\n\n
     
     python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
 

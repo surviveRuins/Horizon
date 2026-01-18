@@ -13,7 +13,7 @@ import commandLineLogic
 secondAndTopLevelDomainVisitedList = []
 
 monitoredDomainsList = []
-comboSquattingDetectionTreshold = 1;# 1: flag any domain that has the string of the secondLevelDomain in it
+comboSquattingDetectionTreshold = 2;# 1: flag any domain that has the string of the secondLevelDomain in it
                                     # 2: flag any domain that "secondLevelDomain-" or "-secondLevelDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will
                                     #    not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
                                     # 3: flag any domain that "secondLevelDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
@@ -34,11 +34,13 @@ def color(pSecondLevelDomain, pColor):
     return f"{getattr(Colors, pColor)}{pSecondLevelDomain}{Colors.RESET}"
 
 def detectComboSquatting(monitoredDomain, domain, domainStringBlacklist):
+    
     # Assumption for our list of monitored domains from the file given by the user in sys.argv[1]: One domain in format main.tld per line: 
     # That means we need to seperate the `main` part as that is the only relevant thing for comboSquatting: paypal.com --> paypal --> now we can detect if the streamIngest() data contains paypal as a signal for comboSquatting
     # In paypal.com the `.com` is called TLD(Top Level Domain) and the `paypal` is called SLD(Second Level Domain)
 
     secondLevelDomain = monitoredDomain.split(".")[0]
+
 
     match(comboSquattingDetectionTreshold):
         case 1:
@@ -128,8 +130,10 @@ def detectLevelSquatting(monitoredDomain, domain, domainStringBlacklist):
 
 def streamIngest(domain):
 
+
     global comboSquattingDetectionTreshold
     comboSquattingDetectionTreshold = commandLineLogic.getComboSquattingDetectionMethod()
+
     monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
 
     domainStringBlacklist = commandLineLogic.getDomainStringBlacklist()
