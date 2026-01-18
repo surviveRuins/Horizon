@@ -8,8 +8,6 @@ import commandLineLogic
 # I can't really believe it either but all the processing doesn't seem to slow the websocket down enough to fall behind the newest state.
 # I did some testing by printing them all here and running wscat on a seperate maschine but it genuinly seems to work perfectly.
 
-#TODO: tld squatting detection doesn't work properly for multiple -d as other already known TLDs aren't registered
-
 secondAndTopLevelDomainVisitedList = []
 
 monitoredDomainsList = []
@@ -87,15 +85,15 @@ def detectTLDSquatting(monitoredDomain, domain, domainStringBlacklist):
 
     global secondAndTopLevelDomainVisitedList
 
-
     if(secondLevelDomain == monitoredSecondLevelDomain):
         if(topLevelDomain != monitoredTopLevelDomain):
             secondAndTopLevelDomain = secondLevelDomain + "." + topLevelDomain
             if secondAndTopLevelDomain not in secondAndTopLevelDomainVisitedList: 
                 if not any(blacklistedString in domain for blacklistedString in domainStringBlacklist):
-                    print("TLDSquatting: ", end='')
-                    print(domain.replace(secondAndTopLevelDomain, color(secondAndTopLevelDomain, 'RED')))
-                    secondAndTopLevelDomainVisitedList.append(secondAndTopLevelDomain)
+                    if not(f"{secondLevelDomain}.{topLevelDomain}" in monitoredDomainsList):
+                        print("TLDSquatting: ", end='')
+                        print(domain.replace(secondAndTopLevelDomain, color(secondAndTopLevelDomain, 'RED')))
+                        secondAndTopLevelDomainVisitedList.append(secondAndTopLevelDomain)
 
 def detectTypoSquatting(monitoredDomain, domain, domainStringBlacklist):
 
@@ -130,10 +128,10 @@ def detectLevelSquatting(monitoredDomain, domain, domainStringBlacklist):
 
 def streamIngest(domain):
 
-
     global comboSquattingDetectionTreshold
     comboSquattingDetectionTreshold = commandLineLogic.getComboSquattingDetectionMethod()
 
+    global monitoredDomainsList
     monitoredDomainsList = commandLineLogic.getMonitoredDomainsList()
 
     domainStringBlacklist = commandLineLogic.getDomainStringBlacklist()
