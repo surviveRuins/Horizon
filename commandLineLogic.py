@@ -17,6 +17,8 @@ global_excludedDetectionModeList = []
 usageExampleString = """
     **Examples:**\n\n 
 
+    python3 horizon.py -d google.com\n\n\n
+
     python3 horizon.py -l monitoredDomains.txt -m 2\n\n\n
     
     python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
