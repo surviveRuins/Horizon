@@ -34,6 +34,8 @@ usageExampleString = """
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level"\n\n
 
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"\n\n
+
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -f ".com"\n\n
 """
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
