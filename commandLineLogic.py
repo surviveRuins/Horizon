@@ -7,6 +7,7 @@ from typing import Annotated
 global_monitoredDomainsList = []
 global_comboSquattingDetectionMethod = None
 global_disable_progress_bar = 0
+global_DomainStringBlacklist = []
 global_damerauLevensheinSimilarityTreshhold = 0.8               # This is based on my own experience and on the reference value from https://www.splunk.com/en_us/blog/security/domain-detection-levenshtein-shannon.html
                                                                 # A treshhold of 1-2 for detection(normalized that is 0.8) seems to be the ideal value to still get valuable results but not get flooded with false positives
 global_cerstream_url = "ws://138.199.224.29:8080/domains-only"  # Use my server as default as it is already running and works out of the box
@@ -30,9 +31,9 @@ usageExampleString = """
 
     python3 horizon.py -d discord.com -m 5 -t 0.7\n\n
 
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level"
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level"\n\n
 
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"\n\n
 """
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
@@ -66,6 +67,7 @@ def monitor(
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-t", help=damerau_levenshtein_similarity_treshhold_message),
         certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
         exclude_detection_modes: Annotated[list[str], typer.Option("--exclude", "-x", help=exclude_detection_modes_help_message)] = None,
+        exclude_domains_with_str: Annotated[list[str], typer.Option("--exclude-string", "-f", help="Exclude any domain from the results that has this string in it. Useful for granular false positive removal and unexpected patterns")] = None,
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
 ):
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
@@ -98,6 +100,10 @@ def monitor(
                 case "level":
                     global_excludedDetectionModeList.append("level") 
             
+    if(exclude_domains_with_str):
+        global global_DomainStringBlacklist
+        for exclude_domain_with_str in exclude_domains_with_str:
+            global_DomainStringBlacklist.append(exclude_domain_with_str)
 
     if(monitored_domains_list):
 
@@ -145,5 +151,7 @@ def getCertstreamURL():
     return global_cerstream_url
 
 def getExcludedDetectionModeList():
-    global_excludedDetectionModeList
     return global_excludedDetectionModeList
+
+def getDomainStringBlacklist():
+   return global_DomainStringBlacklist 
