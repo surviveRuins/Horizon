@@ -31,7 +31,7 @@ usageExampleString = """
 
     python3 horizon.py -d discord.com -m 5 -t 0.7\n\n
 
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level"\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "typo"\n\n
 
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"\n\n
 
@@ -58,7 +58,7 @@ damerau_levenshtein_similarity_treshhold_message = """
 
 exclude_detection_modes_help_message = """
     Squatting method you don't want to be used, can be specified multiple times. Good for filtering false positives
-    or if you only want to use one detection method(to do this, exclude every detection method but the one you want)
+    or if you only want to use one detection method(to do this, exclude every detection method but the one you want). Possible options are -f "typo"|"tld"|"level"|"combo"
 """
 
 @app.command(epilog = usageExampleString)
