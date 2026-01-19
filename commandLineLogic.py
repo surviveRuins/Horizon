@@ -59,8 +59,7 @@ damerau_levenshtein_similarity_treshhold_message = """
 """
 
 exclude_detection_modes_help_message = """
-    Squatting method you don't want to be used, can be specified multiple times. Good for filtering false positives
-    or if you only want to use one detection method(to do this, exclude every detection method but the one you want). Possible options are -f "typo"|"tld"|"level"|"combo"
+    Squatting methods you don't want to use. Good for filtering false positives or if you only want to use one detection method. Options: -f "typo"|"tld"|"level"|"combo"
 """
 
 @app.command(epilog = usageExampleString)
@@ -71,7 +70,7 @@ def monitor(
         damerau_levenshein_similarity_treshhold: str = typer.Option(None, "--similarity-treshhold", "-t", help=damerau_levenshtein_similarity_treshhold_message),
         certstream_url: str = typer.Option(None, "--certstream-url", "-u", help="The URL of the cerstream server that exposes a websocket"),
         exclude_detection_modes: Annotated[list[str], typer.Option("--exclude", "-x", help=exclude_detection_modes_help_message)] = None,
-        exclude_domains_with_str: Annotated[list[str], typer.Option("--exclude-string", "-f", help="Exclude any domain from the results that has this string in it. Useful for granular false positive removal and unexpected patterns")] = None,
+        exclude_domains_with_str: Annotated[list[str], typer.Option("--exclude-string", "-f", help="Exclude any domain from the results that has a string in it. Useful for granular false positive removal and unexpected patterns. This will only apply to the domain, not lines printed in general")] = None,
         combo_squatting_mode: str = typer.Option(None,"--combo-mode", "-m", help=combo_squatting_mode_help_message),
 ):
     global global_monitoredDomainsList # This is the way to grab a global variable in python, if you don't do this it will not be written to the global var defined above
