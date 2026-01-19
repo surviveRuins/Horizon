@@ -19,25 +19,25 @@ usageExampleString = """
 
     python3 horizon.py -d google.com\n\n\n
 
-    python3 horizon.py -l monitoredDomains.txt -m 2\n\n\n
+    python3 horizon.py -l monitoredDomains.txt\n\n\n
     
     python3 horizon.py -u ws://138.199.224.29:8080/domains-only -l monitoredDomains.txt -m 2\n\n
 
     python3 horizon.py -l monitoredDomains.txt -m 3\n\n
 
+    python3 horizon.py -d amazon.com -m 5\n\n
+
     python3 horizon.py -d google.com -d paypal.com -d amazon.com -m 5\n\n
 
-    python3 horizon.py -d discord.com -m 5\n\n
+    python3 horizon.py -d amazon.com -m 5 -n\n\n
 
-    python3 horizon.py -d discord.com -m 5 -n\n\n
+    python3 horizon.py -d amazon.com -m 5 -t 0.7\n\n
 
-    python3 horizon.py -d discord.com -m 5 -t 0.7\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d amazon.com -d coinbase.com -m 2 -x "typo"\n\n
 
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "typo"\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d amazon.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"\n\n
 
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -x "level" -x "combo" -x "tld"\n\n
-
-    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d discord.com -d coinbase.com -m 2 -f ".com"\n\n
+    python3 horizon.py -d google.com -d paypal.com -d amazon.com -d amazon.com -d coinbase.com -m 2 -f ".com" -f "pages"\n\n
 """
 
 app = typer.Typer(no_args_is_help=True, add_completion=False, rich_markup_mode="markdown", pretty_exceptions_enable=False)
