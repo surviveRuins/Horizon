@@ -47,11 +47,11 @@ def initCLI():
 
 combo_squatting_mode_help_message = """
 The mode you want to operate the combosquatting detection in:
-    \n\n- 1: flag any domain that has the string of the secondcomboDomain in it
-    \n\n- 2: flag any domain that "secondcomboDomain-" or "-secondcomboDomain" in it. example-login.com,login-example.com will be flagged examplelogin.com will not be flagged for monitored domain example.com. This is basicially a combination of 3 and 4 and consists of a filter that is less strict
-    \n\n- 3: flag any domain that "secondcomboDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
-    \n\n- 4: flag any domain that has "-secondcomboDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
-    \n\n- 5: flag any domain that has "-secondcomboDomain.topcomboDomain" in it(meaning it has to end on our Fully qualified monitored domain. login-example.com will be flagged, login-example-uber.com won't be flagged
+    \n\n- 1: flag any domain that has the string of the secondlevelDomain in it
+    \n\n- 2: flag any domain that "secondlevelDomain-" or "-secondcomboDomain" in it. example-login.com and login-example.com will be flagged. This is basicially a combination of 3 and 4 so its less strict
+    \n\n- 3: flag any domain that "secondlevelDomain-" in it. example-login.com will be flagged examplelogin.com will not be flagged for monitored domain example.com
+    \n\n- 4: flag any domain that has "-secondlevelDomain" in it. login-example-uber.com and login-examplefr.com will be flagged, example-login.com will not be flagged
+    \n\n- 5: flag any domain that has "-secondlevelDomain.topcomboDomain" in it(meaning it has to end on our Fully qualified monitored domain. login-example.com will be flagged, login-example-uber.com won't be flagged
 """
 
 damerau_levenshtein_similarity_treshhold_message = """
